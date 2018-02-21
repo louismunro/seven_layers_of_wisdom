@@ -31,6 +31,20 @@ It will run a command inside the ns1 namespace and rename veth2 to eth0.
 In addition it will attache veth1 to br1. 
 Look at `ip a` both inside an out of ns1 to see the renamed interface as well as how veth3 now has a master.
 
+Learning ARP
+
+Enter container one.
+Run `arp -an` to see the cache.
+
+Run `arping -c3 $IP_OF_OTHER_CONTAINER`
+Check tcpdump on the bridge as it's happening.
+Check the arp cache on the source.
+Check the arp cache on the destination.
+Notice how it's learned on both ends.
+
+Use ip monitor neighbour inside a container to see the arp cache being updated.
+ 
+
 Demonstrate bridge learning
 
 Disable bridge learning on br1 by running
@@ -61,7 +75,23 @@ If you keep the monitoring session running long enough you will see the bridge d
 
 You can also use `brctl showmacs br1` to see a table that displays the ageing timer for each MAC.
 
+Learning about VLANs
+ 
+Understand collisions.
+Understand broadcast domains.
 
-Learning ARP
+Enable VLAN awareness on the bridge by running 
+`ip link set dev br1 type bridge vlan_filtering 1`
 
+Display the VLANs: 
+`bridge vlan show br1`
+
+
+Set a PVID on a port leading to a container: 
+`bridge vlan add vid  99 dev veth1 pvid`
+`bridge vlan del vid 1 dev veth1`
+We remove VLAN 1 so that the port cannot forward more than one untagged VLAN.
+
+Run tcpdump inside it and capture incoming ethernet frames.
+Run arping in another container and notice how the broadcast frames are not seen inside the container in a different VLAN.
 
