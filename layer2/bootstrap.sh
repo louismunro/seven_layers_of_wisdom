@@ -15,7 +15,7 @@ ip link set veth2 netns ns0
 ip netns exec ns0 ip link set veth2 down 
 ip netns exec ns0 ip link set veth2 name eth0
 ip netns exec ns0 ip link set eth0 up 
-ip netns exec ns0 ip addr add 10.99.0.2/24 dev eth0
+ip netns exec ns0 ip addr add 10.99.0.2/24 broadcast 10.99.0.255 dev eth0
 ip link set  veth1  master br1
 
 # add container 2
@@ -27,7 +27,7 @@ ip link set veth4 netns ns1
 ip netns exec ns1 ip link set veth4 down 
 ip netns exec ns1 ip link set veth4 name eth0
 ip netns exec ns1 ip link set eth0 up 
-ip netns exec ns1 ip addr add 10.99.0.3/24 dev eth0
+ip netns exec ns1 ip addr add 10.99.0.3/24 broadcast 10.99.0.255 dev eth0
 ip link set  veth3  master br1
 
 # add container 3
@@ -39,5 +39,5 @@ ip link set veth6 netns ns2
 ip netns exec ns2 ip link set veth6 down 
 ip netns exec ns2 ip link set veth6 name eth0
 ip netns exec ns2 ip link set eth0 up 
-ip netns exec ns2 ip addr add 10.99.0.4/24 dev eth0
+ip netns exec ns2 ip addr add 10.99.0.4/24 broadcast 10.99.0.255 dev eth0
 ip link set  veth5  master br1

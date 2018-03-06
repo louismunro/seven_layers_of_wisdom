@@ -9,6 +9,6 @@ ip link set veth8 netns ns3
 ip netns exec ns3 ip link set veth8 down 
 ip netns exec ns3 ip link set veth8 name eth0
 ip netns exec ns3 ip link set eth0 up 
-ip netns exec ns3 ip addr add 10.101.0.2/24 dev eth0
+ip netns exec ns3 ip addr add 10.101.0.2/24 broadcast 10.101.0.255 dev eth0
 
 ip link set  veth7  master br2

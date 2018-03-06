@@ -99,3 +99,40 @@ We remove VLAN 1 so that the port cannot forward more than one untagged VLAN.
 Run tcpdump inside it and capture incoming ethernet frames.
 Run arping in another container and notice how the broadcast frames are not seen inside the container in a different VLAN.
 
+
+Create br2 with the `create_br2.sh` script. 
+Create two new containers with create_cont4.sh and create_cont5.sh.
+This will also give them ips 10.101.0.2/24 and 10.101.0.3/24. 
+Note how these are not part of the 10.99.0.0/24 subnet.
+
+Run an `arping -ieth0 -c5 10.99.0.4` from ns0. 
+At the same time, run `tcpdump -ieth0 -etnnl arp` from ns4. 
+Notice how you see the broadcasts for the 10.99.0.0/24 subnet, even though the ip of ns4 is in the 10.101.0.024 subnet.
+Why? 
+
+Run the `set_vlans.sh` script.
+It will place the containers in vlans 99 and 101.
+
+Swap the bridges for ns2 and ns4 by running: 
+
+`ip link set dev veth5 master br2`
+`ip link set dev veth9 master br1`
+
+Can you still ping either container from another in the same subnet? 
+Why?
+
+How would you fix that? 
+
+Additional exercises
+
+fdb poisoning (duplicate MAC)
+
+Copy the MAC of one container to another's eth0 by running the following:
+`ip link dev eth0 $COPIED_MAC`
+
+Run `arping -ieth0 $SOME_IP` and let it run.
+
+From another container, try pinging the IP of the container whose MAC was cloned.
+What happens? Why? 
+
+Check out `bridge monitor fdb` on br1.
