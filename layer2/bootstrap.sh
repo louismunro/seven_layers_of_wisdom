@@ -4,6 +4,7 @@
 
 ip link add name br1 type bridge
 ip link set br1 up
+ip link set dev br1 type bridge vlan_filtering 1
 
 # add container 1
 ip netns add ns0

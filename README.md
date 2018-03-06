@@ -2,7 +2,11 @@
 A repository for playing with the (seven) layers of the OSI model.
 
 
-# exercises
+# Layer 2 exercises
+
+Prerequisites
+Install the following packages (for debian): 
+tcpdump vlan bridge-utils net-tools ethtool arping
 
 Run create_br1.sh
 This will set up a bridge called br1.
@@ -84,11 +88,11 @@ Enable VLAN awareness on the bridge by running
 `ip link set dev br1 type bridge vlan_filtering 1`
 
 Display the VLANs: 
-`bridge vlan show br1`
+`bridge vlan show `
 
 
 Set a PVID on a port leading to a container: 
-`bridge vlan add vid  99 dev veth1 pvid`
+`bridge vlan add vid  99 dev veth1 pvid egress untagged`
 `bridge vlan del vid 1 dev veth1`
 We remove VLAN 1 so that the port cannot forward more than one untagged VLAN.
 
